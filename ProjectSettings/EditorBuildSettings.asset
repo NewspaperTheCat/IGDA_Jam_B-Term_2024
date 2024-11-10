@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Game/Examples/FumperFalls/FumperFalls.unity
     guid: 1c00c753017bcf6428fb0567ceee5962
   - enabled: 1
+    path: Assets/Game/BundledUp/CrowdMinigame.unity
+    guid: 7e6182b6a55fee346833cab45c416a31
+  - enabled: 1
     path: Assets/Game/MinigameFramework/Menu/Results/Results.unity
     guid: 3e0c1ba0862727843949a8a80a7397be
   - enabled: 1
