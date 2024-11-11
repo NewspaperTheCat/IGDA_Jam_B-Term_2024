@@ -59,7 +59,6 @@ public class MinigameManager : MonoBehaviour
     private void AwardPoints(List<int> ranking) {
         for(int playerIndex = 0; playerIndex < PlayerManager.players.Count; playerIndex++) {
             int playerRank = ranking[playerIndex];
-            Debug.Log(playerIndex + " got points: " + GetPointsForRank(playerRank));
             PlayerManager.players[playerIndex].points += GetPointsForRank(playerRank);
         }
     }

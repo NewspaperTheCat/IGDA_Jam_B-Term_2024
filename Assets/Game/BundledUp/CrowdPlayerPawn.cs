@@ -26,6 +26,13 @@ public class CrowdPlayerPawn : Pawn
         } else if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Select) {
             Vector2 delta = _moveInput * pointerSpeed * Time.deltaTime;
             pointer.transform.position += new Vector3(delta.x, delta.y, 0);
+            
+            Vector2 boundaries = CrowdGameManager.inst.boundaries;
+            Vector2 center = CrowdGameManager.inst.center;
+            pointer.transform.position = new Vector2(
+                Mathf.Clamp(pointer.transform.position.x - center.x, -boundaries.x, boundaries.x),
+                Mathf.Clamp(pointer.transform.position.y - center.y, -boundaries.y, boundaries.y)
+            ) + center;
         }
     }
 
@@ -65,7 +72,7 @@ public class CrowdPlayerPawn : Pawn
         } else if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Select) {
             selectionStartTime = Time.time;
             pointer.SetActive(true);
-            pointer.transform.position = Vector3.zero;
+            pointer.transform.position = CrowdGameManager.inst.center + new Vector2(-1.25f + .75f * playerPawnIndex, 0);
         } else if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Score) {
             if (selectedPedestrian != null) selectedPedestrian.Select(false);
         }
@@ -105,5 +112,17 @@ public class CrowdPlayerPawn : Pawn
             return 1;
 
         return 0;
+    }
+
+    public Vector3 GetHighlightedPosition() {
+        if (highlightedPedestrian != null) {
+            return highlightedPedestrian.transform.position;
+        } else {
+            return pointer.transform.position;
+        }
+    }
+
+    public Vector3 GetPointerPosition() {
+        return pointer.transform.position;
     }
 }

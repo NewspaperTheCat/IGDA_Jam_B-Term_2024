@@ -87,11 +87,12 @@ public class PedestrianBehavior : MonoBehaviour
             transform.Translate(velocity * Time.deltaTime);
             timer -= Time.deltaTime;
 
-            Vector2 boundaries = CrowdGameManager.inst.screenBoundaries;
+            Vector2 boundaries = CrowdGameManager.inst.boundaries;
+            Vector2 center = CrowdGameManager.inst.center;
             transform.position = new Vector2(
-                Mathf.Clamp(transform.position.x, -boundaries.x, boundaries.x),
-                Mathf.Clamp(transform.position.y, -boundaries.y, boundaries.y)
-            );
+                Mathf.Clamp(transform.position.x - center.x, -boundaries.x, boundaries.x),
+                Mathf.Clamp(transform.position.y - center.y, -boundaries.y, boundaries.y)
+            ) + center;
         }
     }
 

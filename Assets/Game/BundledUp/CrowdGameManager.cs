@@ -8,12 +8,14 @@ public class CrowdGameManager : MonoBehaviour
 {
     public static CrowdGameManager inst;
 
-    public Vector2 screenBoundaries = new Vector2(17f, 8.25f);
+    public Vector2 boundaries = new Vector2(17f, 8.25f);
+    public Vector2 center = new Vector2(0, -7.5f/2f);
     [SerializeField] private GameObject pedestrianPrefab;
     [SerializeField] private int numPedestrians = 25;
     [SerializeField] private int numRounds = 3;
     [SerializeField] private List<CrowdPlayerPawn> players = new List<CrowdPlayerPawn>();
     private int[] playerScores;
+    [SerializeField] private GameObject validationPrefab;
     
     [SerializeField] private TextMeshProUGUI roundDisplay;
     [SerializeField] private TextMeshProUGUI phaseTimerText;
@@ -24,12 +26,13 @@ public class CrowdGameManager : MonoBehaviour
     public enum gamePhase {
         Search,
         Select,
-        Score
+        Score,
+        Rank
     }
 
     public gamePhase currentGamePhase = gamePhase.Search;
     private float phaseTimer;
-    [SerializeField] private float searchDuration = 15, selectDuration = 10, scoreDuration = 5;
+    [SerializeField] private float searchDuration = 15, selectDuration = 10, scoreDuration = 5, rankDuration = 5;
     private List<PedestrianBehavior> pedestrians = new List<PedestrianBehavior>();
 
     private void Awake() {
@@ -39,9 +42,9 @@ public class CrowdGameManager : MonoBehaviour
     void Start() {
         for (int i = 0; i < numPedestrians; i++) {
             Vector2 ranPos = new Vector2(
-                Random.Range(-screenBoundaries.x, screenBoundaries.x),
-                Random.Range(-screenBoundaries.y, screenBoundaries.y)
-            );
+                Random.Range(-boundaries.x, boundaries.x),
+                Random.Range(-boundaries.y, boundaries.y)
+            ) + center;
             GameObject pedestrian = Instantiate(pedestrianPrefab, ranPos, Quaternion.identity);
             pedestrians.Add(pedestrian.GetComponent<PedestrianBehavior>());
         }
@@ -71,13 +74,14 @@ public class CrowdGameManager : MonoBehaviour
 
                 ScoreSelections();
             } else if (currentGamePhase == gamePhase.Score) {
-                currentGamePhase = gamePhase.Search;
-                phaseTimer = searchDuration;
-
                 round++;
                 if (round > numRounds) {
+                    currentGamePhase = gamePhase.Rank;
+                    phaseTimer = rankDuration;
                     SubmitScores();
                 } else {
+                    currentGamePhase = gamePhase.Search;
+                    phaseTimer = searchDuration;
                     roundDisplay.text = "Round " + round;
                 }
             }
@@ -95,10 +99,13 @@ public class CrowdGameManager : MonoBehaviour
         return foundPedestrian;
     }
 
+    List<CrowdPlayerPawn> correctPlayers = new List<CrowdPlayerPawn>();
+    List<CrowdPlayerPawn> wrongPlayers = new List<CrowdPlayerPawn>();
+    List<CrowdPlayerPawn> inactivePlayers = new List<CrowdPlayerPawn>();
     private void ScoreSelections() {
-        List<CrowdPlayerPawn> correctPlayers = new List<CrowdPlayerPawn>();
-        List<CrowdPlayerPawn> wrongPlayers = new List<CrowdPlayerPawn>();
-        List<CrowdPlayerPawn> inactivePlayers = new List<CrowdPlayerPawn>();
+        correctPlayers = new List<CrowdPlayerPawn>();
+        wrongPlayers = new List<CrowdPlayerPawn>();
+        inactivePlayers = new List<CrowdPlayerPawn>();
 
         foreach (CrowdPlayerPawn player in players) {
             if (player.HighlightedAny()) {
@@ -132,6 +139,34 @@ public class CrowdGameManager : MonoBehaviour
         for (int i = 0; i < playerScores.Length; i++) {
             playerScores[orderedPlayers[i].playerPawnIndex] += playerScores.Length - i;
         }
+
+        StartCoroutine("DisplayAccuracy");
+    }
+
+    IEnumerator DisplayAccuracy() {
+        foreach (CrowdPlayerPawn player in correctPlayers) {
+            ValidationBehavior vb = Instantiate(
+                validationPrefab,
+                player.GetHighlightedPosition(),
+                Quaternion.identity
+            ).GetComponent<ValidationBehavior>();
+            vb.SetVisuals(true);
+
+            yield return new WaitForSeconds(scoreDuration / players.Count);
+        }
+
+        List<CrowdPlayerPawn> incorrectPlayers = wrongPlayers;
+        incorrectPlayers.AddRange(inactivePlayers);
+        foreach (CrowdPlayerPawn player in wrongPlayers) {
+            ValidationBehavior vb = Instantiate(
+                validationPrefab,
+                player.GetHighlightedPosition(),
+                Quaternion.identity
+            ).GetComponent<ValidationBehavior>();
+            vb.SetVisuals(false);
+
+            yield return new WaitForSeconds(scoreDuration / players.Count);
+        }
     }
 
     void Shuffle(List<CrowdPlayerPawn> ts) {
@@ -145,9 +180,9 @@ public class CrowdGameManager : MonoBehaviour
 		}
 	}
 
-    void SubmitScores() {
-        MinigameManager.Ranking ranking = new();
+    MinigameManager.Ranking ranking = new();
 
+    void SubmitScores() {
         List<int> rearrangableScores = new List<int>();
         foreach (int score in playerScores) {
             rearrangableScores.Add(score);
@@ -163,15 +198,31 @@ public class CrowdGameManager : MonoBehaviour
                     scoreMaxIndex = i;
                 }
             }
-            Debug.Log(scoreMaxIndex + " had a score of " + scoreMax);
             ranking.SetRank(scoreMaxIndex, j + 1);
             rearrangableScores[scoreMaxIndex] = -1;
         }
 
-        for (int i = 0; i < 4; i++) {
-            Debug.Log(i + " got a rank of " + ranking.playerRanks[i]);
+        StartCoroutine("DisplayRankings");
+    }
+
+    IEnumerator DisplayRankings() {
+        roundDisplay.text = "Finished";
+
+        foreach (CrowdPlayerPawn player in players) {
+            ValidationBehavior vb = Instantiate(
+                validationPrefab,
+                player.GetPointerPosition(),
+                Quaternion.identity
+            ).GetComponent<ValidationBehavior>();
+            vb.UseRank(ranking.playerRanks[player.playerPawnIndex]);
+
+            yield return new WaitForSeconds(rankDuration / players.Count);
         }
 
         MinigameManager.instance.EndMinigame(ranking);
+    }
+
+    public float GetRemainingPhaseTime() {
+        return phaseTimer;
     }
 }
