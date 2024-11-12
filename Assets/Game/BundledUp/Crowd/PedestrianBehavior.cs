@@ -14,7 +14,7 @@ public class PedestrianBehavior : MonoBehaviour
     }
 
     [SerializeField] private pedestrianMovment movementType;
-    [SerializeField] private Gradient colorRange;
+    [SerializeField] private List<Color> colorOptions = new(); 
 
     private float timer = 0;
     private Vector2 velocity = Vector2.zero;
@@ -22,13 +22,12 @@ public class PedestrianBehavior : MonoBehaviour
     private Vector2 pivot = Vector2.zero;
 
     public int controlledByIndex = -1;
-    private Transform sprite;
+    [SerializeField] private Transform spriteHolder;
+    [SerializeField] private SpriteRenderer[] colorableSprites;
+    [SerializeField] private SpriteRenderer highlightSprite;
     private bool highlighted = false;
-    private Transform highlight;
 
     void Start() {
-        sprite = GetComponentInChildren<SpriteRenderer>().transform;
-
         ChooseMovementType();
         ChooseAttire();
     }
@@ -65,7 +64,8 @@ public class PedestrianBehavior : MonoBehaviour
     }
 
     void ChooseAttire() {
-        sprite.GetComponent<SpriteRenderer>().color = colorRange.Evaluate(Random.Range(0.0f, 1.0f));
+        foreach (SpriteRenderer sr in colorableSprites)
+            sr.color = colorOptions[Random.Range(0, colorOptions.Count)];
     }
 
     void Update() {
@@ -174,43 +174,27 @@ public class PedestrianBehavior : MonoBehaviour
 
     public void Select(bool setTo) {
         if (setTo || highlighted) {
-            sprite.transform.localScale = Vector3.one * 1.5f;
+            spriteHolder.transform.localScale = Vector3.one * 1.5f;
         } else {
-            sprite.transform.localScale = Vector3.one;
+            spriteHolder.transform.localScale = Vector3.one;
         }
     }
 
     public void Highlight(Color highlightColor) {
         if (highlightColor == Color.white) { // White is the exit color
             highlighted = false;
-            if (highlight != null) {
-                Destroy(highlight.gameObject);
-                highlight = null;
-            }
+            highlightSprite.enabled = false;
             Select(false);
             return;
         } else if (!highlighted) {
             highlighted = true;
-            highlight = Instantiate(sprite.gameObject, transform.position, Quaternion.identity, sprite).transform;
-            highlight.localScale = Vector3.one * 1.25f;
-            SetHighlightColor(highlight, highlightColor);
+            highlightSprite.enabled = true;
+            highlightSprite.color = highlightColor;
         }
     }
 
     public bool IsHighlighted() {
         return highlighted;
-    }
-
-    private void SetHighlightColor(Transform subject, Color setTo) {
-        SpriteRenderer subjectRenderer = subject.GetComponent<SpriteRenderer>();
-        if (subjectRenderer != null) {
-            subjectRenderer.color = setTo;
-            subjectRenderer.sortingOrder = -1;
-        }
-
-        // for (int i = 0; i < transform.childCount; i++) {
-        //     SetHighlightColor(transform.GetChild(i), setTo);
-        // }
     }
 
 }

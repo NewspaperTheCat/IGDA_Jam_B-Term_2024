@@ -45,7 +45,9 @@ public class MinigameManager : MonoBehaviour
     }
     
     public void LoadMinigame(MinigameInfo minigame) {
+        Debug.Log("Going to next game");
         SceneManager.LoadScene(minigame.scene.SceneName);
+        Debug.Log("loaded scene");
         PlayerManager.SetMinigameActionMap();
     }
     

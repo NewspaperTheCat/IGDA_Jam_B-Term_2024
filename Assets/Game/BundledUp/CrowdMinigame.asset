@@ -17,11 +17,10 @@ MonoBehaviour:
   scene:
     m_SceneAsset: {fileID: 102900000, guid: 7e6182b6a55fee346833cab45c416a31, type: 3}
     m_SceneName: CrowdMinigame
-  description: 'Be the first to find who you are in a crowd.
+  description: 'Be first to find who you are in a crowd.
 
-    Control a random
-    pedestrain for a few seconds then select your character before anyone else finds
-    theirs.'
+    Control a random pedestrain
+    for a few seconds then select your character before anyone else finds theirs.'
   controls: '--Search Phase--
 
     Left Stick - Move Pedestrain
