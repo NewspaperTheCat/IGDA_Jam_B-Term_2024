@@ -7,7 +7,7 @@ public class ValidationBehavior : MonoBehaviour
     [SerializeField] private Sprite correctSprite, wrongSprite;
     [SerializeField] private Sprite[] rankingSprites;
 
-    [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private SpriteRenderer sr, srHightlight;
     [SerializeField] private Animator an;
 
     private bool isRanking = false;
@@ -23,20 +23,15 @@ public class ValidationBehavior : MonoBehaviour
         Destroy(gameObject, 1.5f);
     }
 
-    public void SetVisuals(bool isSuccess) {
-        // swap out for the comments when implemented
-        if (isSuccess) {
-            sr.color = Color.blue;
-            // sr.sprite = correctSprite;
-        } else {
-            sr.color = Color.red;
-            // sr.sprite = wrongSprite;
-        }
+    public void SetVisuals(bool isSuccess, Color playerColor) {
+        srHightlight.color = playerColor;
+        sr.sprite = isSuccess ? correctSprite : wrongSprite;
     }
 
-    public void UseRank(int ranking) {
+    public void UseRank(int ranking, Color playerColor) {
+        srHightlight.enabled = false;
+        sr.color = playerColor;
         sr.sprite = rankingSprites[ranking - 1];
-        transform.localScale = Vector3.one * 1.5f;
         isRanking = true;
     }
 }

@@ -45,6 +45,7 @@ public class CrowdPlayerPawn : Pawn
                     if (selectedPedestrian != null) selectedPedestrian.Select(false);
                     selectedPedestrian = newPedestrian;
                     selectedPedestrian.Select(true);
+                    AudioManager.inst.PlayHover();
                 }
             } else if (selectedPedestrian != null) {
                 selectedPedestrian.Select(false);
@@ -56,6 +57,7 @@ public class CrowdPlayerPawn : Pawn
                 highlightedPedestrian = selectedPedestrian;
                 highlightedPedestrian.Highlight(playerColor);
                 highlightTime = Time.time;
+                AudioManager.inst.PlayHighlight();
             }
         }
     }
@@ -124,5 +126,9 @@ public class CrowdPlayerPawn : Pawn
 
     public Vector3 GetPointerPosition() {
         return pointer.transform.position;
+    }
+
+    public Color GetColor() {
+        return playerColor;
     }
 }

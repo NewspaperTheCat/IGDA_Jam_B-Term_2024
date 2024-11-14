@@ -155,7 +155,7 @@ public class CrowdGameManager : MonoBehaviour
                 player.GetHighlightedPosition(),
                 Quaternion.identity
             ).GetComponent<ValidationBehavior>();
-            vb.SetVisuals(true);
+            vb.SetVisuals(true, player.GetColor());
 
             yield return new WaitForSeconds(scoreDuration / players.Count);
         }
@@ -168,7 +168,7 @@ public class CrowdGameManager : MonoBehaviour
                 player.GetHighlightedPosition(),
                 Quaternion.identity
             ).GetComponent<ValidationBehavior>();
-            vb.SetVisuals(false);
+            vb.SetVisuals(false, player.GetColor());
 
             yield return new WaitForSeconds(scoreDuration / players.Count);
         }
@@ -219,7 +219,7 @@ public class CrowdGameManager : MonoBehaviour
                 player.GetPointerPosition(),
                 Quaternion.identity
             ).GetComponent<ValidationBehavior>();
-            vb.UseRank(ranking.playerRanks[player.playerPawnIndex]);
+            vb.UseRank(ranking.playerRanks[player.playerPawnIndex], player.GetColor());
 
             yield return new WaitForSeconds(rankDuration / players.Count);
         }

@@ -1,4 +1,3 @@
 repository "IGDA_Jam_B-Term_2024@Newspaper2003@cloud"
   path "/"
-    br "/main"
-    co "/main"
+    smartbranch "/main"
