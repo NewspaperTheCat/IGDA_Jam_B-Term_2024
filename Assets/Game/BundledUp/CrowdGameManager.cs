@@ -63,6 +63,21 @@ public class CrowdGameManager : MonoBehaviour
             else
                 phaseTimerText.text = "" + Mathf.Ceil(phaseTimer);
             phaseTimer -= Time.deltaTime;
+            if (currentGamePhase == gamePhase.Select)
+            {
+                int selectCount = 0;
+                foreach (CrowdPlayerPawn player in players)
+                {
+                    if (player.HighlightedAny())
+                    {
+                        selectCount++;
+                    }
+                }
+                if (selectCount == players.Count)
+                {
+                    phaseTimer = 0;
+                }
+            }
         } else {
             phaseTimerText.text = "0";
             if (currentGamePhase == gamePhase.Search) {
