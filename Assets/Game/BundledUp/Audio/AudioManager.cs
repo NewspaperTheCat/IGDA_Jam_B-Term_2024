@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] List<AudioSource> ambienceSounds = new();
     [SerializeField] GameObject SFXPrefab;
-    [SerializeField] AudioClip highlightSound, hoverSound;
+    [SerializeField] AudioClip highlightSound, hoverSound, correctSound, incorrectSound;
 
     private void Awake() {
         inst = this;
@@ -51,5 +51,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlayHighlight() {
         PlaySound(highlightSound);
+    }
+
+    public void PlayCorrect() {
+        PlaySound(correctSound);
+    }
+
+    public void PlayIncorrect() {
+        PlaySound(incorrectSound);
     }
 }

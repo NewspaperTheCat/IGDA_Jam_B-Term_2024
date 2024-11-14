@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: -641200676, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  m_Sprite: {fileID: -602280380, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -246,3 +246,4 @@ MonoBehaviour:
   sr: {fileID: 1262545522038262971}
   srHightlight: {fileID: 7879429009737717709}
   an: {fileID: 2914714282456285363}
+  tintDegree: 0.6

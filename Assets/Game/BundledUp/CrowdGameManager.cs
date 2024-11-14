@@ -83,14 +83,13 @@ public class CrowdGameManager : MonoBehaviour
                     currentGamePhase = gamePhase.Search;
                     phaseTimer = searchDuration;
                     roundDisplay.text = "Round " + round;
+
+                    foreach (PedestrianBehavior pedestrian in pedestrians) {
+                        pedestrian.ChooseMovementType();
+                    }
                 }
             }
             sceneChanged.Invoke();
-            
-            foreach (PedestrianBehavior pedestrian in pedestrians)
-            {
-                pedestrian.ChooseMovementType();
-            }
         }
     }
 
@@ -156,6 +155,7 @@ public class CrowdGameManager : MonoBehaviour
                 Quaternion.identity
             ).GetComponent<ValidationBehavior>();
             vb.SetVisuals(true, player.GetColor());
+            AudioManager.inst.PlayCorrect();
 
             yield return new WaitForSeconds(scoreDuration / players.Count);
         }
@@ -169,6 +169,7 @@ public class CrowdGameManager : MonoBehaviour
                 Quaternion.identity
             ).GetComponent<ValidationBehavior>();
             vb.SetVisuals(false, player.GetColor());
+            AudioManager.inst.PlayIncorrect();
 
             yield return new WaitForSeconds(scoreDuration / players.Count);
         }

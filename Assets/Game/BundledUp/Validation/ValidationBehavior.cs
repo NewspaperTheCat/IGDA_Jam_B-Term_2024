@@ -29,7 +29,7 @@ public class ValidationBehavior : MonoBehaviour
     }
 
     public void UseRank(int ranking, Color playerColor) {
-        srHightlight.enabled = false;
+        srHightlight.color = Color.Lerp(playerColor, Color.white, .6f);
         sr.color = playerColor;
         sr.sprite = rankingSprites[ranking - 1];
         isRanking = true;
