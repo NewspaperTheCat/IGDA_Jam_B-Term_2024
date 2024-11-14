@@ -32,7 +32,7 @@ public class PedestrianBehavior : MonoBehaviour
         ChooseAttire();
     }
 
-    void ChooseMovementType() {
+    public void ChooseMovementType() {
         int chosenType = Random.Range(0, 100);
         if (chosenType >= 70) {
             chosenType = (int)pedestrianMovment.Wander;

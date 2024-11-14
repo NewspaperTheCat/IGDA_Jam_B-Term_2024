@@ -86,6 +86,11 @@ public class CrowdGameManager : MonoBehaviour
                 }
             }
             sceneChanged.Invoke();
+            
+            foreach (PedestrianBehavior pedestrian in pedestrians)
+            {
+                pedestrian.ChooseMovementType();
+            }
         }
     }
 
