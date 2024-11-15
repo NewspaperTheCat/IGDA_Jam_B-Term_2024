@@ -7844,7 +7844,7 @@ MonoBehaviour:
   center: {x: 0, y: -3}
   pedestrianPrefab: {fileID: 1920749213441905201, guid: 0dbdc7401bbbe9140860539b39f92b0a, type: 3}
   numPedestrians: 90
-  numRounds: 3
+  numRounds: 1
   players:
   - {fileID: 1675663930}
   - {fileID: 1533345083}

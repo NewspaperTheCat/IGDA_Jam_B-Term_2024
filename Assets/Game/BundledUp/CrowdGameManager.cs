@@ -52,11 +52,12 @@ public class CrowdGameManager : MonoBehaviour
         }
 
         // Remove disconnected players
-        // for (int i = 3 ; i > PlayerManager.players.Count - 1 ; i--) {
-        //     Destroy(players[i].gameObject);
-        //     players.RemoveAt(i);
+        if (PlayerManager.players.Count != 0)
+            for (int i = 3 ; i > PlayerManager.players.Count - 1 ; i--) {
+                Destroy(players[i].gameObject);
+                players.RemoveAt(i);
 
-        // }
+            }
 
         playerScores = new int[players.Count];
 
