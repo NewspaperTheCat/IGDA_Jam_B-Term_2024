@@ -5,8 +5,9 @@ using Game.MinigameFramework.Scripts.Tags;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
-public class CrowdPlayerPawn : Pawn
+public class CrowdPlayerPawn : Pawn, IComparable<CrowdPlayerPawn>
 {
     public int playerPawnIndex;
     [SerializeField] private Color playerColor;
@@ -69,7 +70,10 @@ public class CrowdPlayerPawn : Pawn
                 highlightedPedestrian.Highlight(Color.white);
                 highlightedPedestrian = null;
             }
-            if (controlledPedestrian != null) controlledPedestrian.CeasePlayer();
+            if (controlledPedestrian != null) {
+                controlledPedestrian.ChooseAttire();
+                controlledPedestrian.CeasePlayer();
+            }
             controlledPedestrian = CrowdGameManager.inst.ChooseRandomPlayer(playerPawnIndex);
         } else if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Select) {
             selectionStartTime = Time.time;
@@ -77,6 +81,7 @@ public class CrowdPlayerPawn : Pawn
             pointer.transform.position = CrowdGameManager.inst.center + new Vector2(-1.25f + .75f * playerPawnIndex, 0);
         } else if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Score) {
             if (selectedPedestrian != null) selectedPedestrian.Select(false);
+            controlledPedestrian.SetAttire(playerColor);
         }
     }
 
@@ -102,10 +107,9 @@ public class CrowdPlayerPawn : Pawn
         return highlightTime - selectionStartTime;
     }
 
-    public int CompareTo(object obj)
+    public int CompareTo(CrowdPlayerPawn b)
     {
         var a = this;
-        var b = obj as CrowdPlayerPawn;
      
         if (a.GetTimeToHighlight() < b.GetTimeToHighlight())
             return -1;

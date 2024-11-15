@@ -15,6 +15,7 @@ public class CrowdGameManager : MonoBehaviour
     [SerializeField] private int numRounds = 3;
     [SerializeField] private List<CrowdPlayerPawn> players = new List<CrowdPlayerPawn>();
     private int[] playerScores;
+    [SerializeField] private List<TextMeshProUGUI> scoreDisplays = new();
     [SerializeField] private GameObject validationPrefab;
     
     [SerializeField] private TextMeshProUGUI roundDisplay;
@@ -123,22 +124,14 @@ public class CrowdGameManager : MonoBehaviour
             }
         }
 
-        // Debug.Log(correctPlayers.Count + " > " + wrongPlayers.Count + " > " + inactivePlayers.Count);
-
-        correctPlayers.Sort();
-        wrongPlayers.Sort();
-        Shuffle(inactivePlayers);
+        if (correctPlayers.Count > 1) correctPlayers.Sort();
+        if (wrongPlayers.Count > 1) wrongPlayers.Sort();
+        if (inactivePlayers.Count > 1) Shuffle(inactivePlayers);
 
         List<CrowdPlayerPawn> orderedPlayers = new List<CrowdPlayerPawn>();
         orderedPlayers.AddRange(correctPlayers);
         orderedPlayers.AddRange(wrongPlayers);
         orderedPlayers.AddRange(inactivePlayers);
-
-        // string output = "Round Rankings:";
-        // foreach (CrowdPlayerPawn player in orderedPlayers) {
-        //     output += "\t" + player.playerPawnIndex;
-        // }
-        // Debug.Log(output);
 
         for (int i = 0; i < playerScores.Length; i++) {
             playerScores[orderedPlayers[i].playerPawnIndex] += playerScores.Length - i;
@@ -172,6 +165,10 @@ public class CrowdGameManager : MonoBehaviour
             AudioManager.inst.PlayIncorrect();
 
             yield return new WaitForSeconds(scoreDuration / players.Count);
+        }
+
+        for (int i = 0; i < playerScores.Length; i++) {
+            scoreDisplays[i].text = "" + playerScores[i];
         }
     }
 

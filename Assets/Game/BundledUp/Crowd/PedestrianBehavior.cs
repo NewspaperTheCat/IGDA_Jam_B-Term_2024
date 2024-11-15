@@ -63,9 +63,16 @@ public class PedestrianBehavior : MonoBehaviour
         }
     }
 
-    void ChooseAttire() {
+    public void ChooseAttire() {
+        spriteHolder.localScale = Vector3.one;
         foreach (SpriteRenderer sr in colorableSprites)
             sr.color = colorOptions[Random.Range(0, colorOptions.Count)];
+    }
+
+    public void SetAttire(Color setTo) {
+        spriteHolder.localScale = Vector3.one * 2f;
+        foreach (SpriteRenderer sr in colorableSprites)
+            sr.color = setTo;
     }
 
     void Update() {
