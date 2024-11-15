@@ -214,13 +214,19 @@ public class CrowdGameManager : MonoBehaviour
     IEnumerator DisplayRankings() {
         roundDisplay.text = "Finished";
 
+        CrowdPlayerPawn[] playersInRankOrder = new CrowdPlayerPawn[players.Count];
         foreach (CrowdPlayerPawn player in players) {
+            playersInRankOrder[players.Count - ranking.playerRanks[player.playerPawnIndex]] = player;
+        }
+
+        foreach (CrowdPlayerPawn player in playersInRankOrder) {
             ValidationBehavior vb = Instantiate(
                 validationPrefab,
                 player.GetPointerPosition(),
                 Quaternion.identity
             ).GetComponent<ValidationBehavior>();
             vb.UseRank(ranking.playerRanks[player.playerPawnIndex], player.GetColor());
+            AudioManager.inst.PlayHighlight();
 
             yield return new WaitForSeconds(rankDuration / players.Count);
         }

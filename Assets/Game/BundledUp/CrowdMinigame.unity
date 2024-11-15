@@ -5378,9 +5378,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 645f10888d547dd44857cfa5976a7571, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e49fdbf41c369894abd4565b50c0130e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.125
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -6243,7 +6243,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b17c6960a60a1b945a8d716acc45e5c5, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.95
+  m_Volume: 0.8
   m_Pitch: 2
   Loop: 1
   Mute: 0
@@ -6371,7 +6371,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 27923832b1cdc314480d45fc571ba53c, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -7304,7 +7304,7 @@ MonoBehaviour:
   center: {x: 0, y: -3}
   pedestrianPrefab: {fileID: 1920749213441905201, guid: 0dbdc7401bbbe9140860539b39f92b0a, type: 3}
   numPedestrians: 90
-  numRounds: 1
+  numRounds: 3
   players:
   - {fileID: 1675663930}
   - {fileID: 1533345083}
