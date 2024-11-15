@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
+using Game.MinigameFramework.Scripts.Framework.PlayerInfo;
 
 public class CrowdGameManager : MonoBehaviour
 {
@@ -49,6 +50,13 @@ public class CrowdGameManager : MonoBehaviour
             GameObject pedestrian = Instantiate(pedestrianPrefab, ranPos, Quaternion.identity);
             pedestrians.Add(pedestrian.GetComponent<PedestrianBehavior>());
         }
+
+        // Remove disconnected players
+        // for (int i = 3 ; i > PlayerManager.players.Count - 1 ; i--) {
+        //     Destroy(players[i].gameObject);
+        //     players.RemoveAt(i);
+
+        // }
 
         playerScores = new int[players.Count];
 
