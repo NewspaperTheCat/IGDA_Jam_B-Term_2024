@@ -103,6 +103,10 @@ public class CrowdPlayerPawn : Pawn, IComparable<CrowdPlayerPawn>
         return HighlightedAny() ? highlightedPedestrian.controlledByIndex == playerPawnIndex : false;
     }
 
+    public bool HighlightedStolen() {
+        return !HighlightedCorrectPedestrian() && highlightedPedestrian.controlledByIndex != -1;
+    }
+
     public float GetTimeToHighlight() {
         return highlightTime - selectionStartTime;
     }

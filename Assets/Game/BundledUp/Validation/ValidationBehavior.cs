@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ValidationBehavior : MonoBehaviour
 {
-    [SerializeField] private Sprite correctSprite, wrongSprite;
+    [SerializeField] private Sprite correctSprite, wrongSprite, stolenSprite;
     [SerializeField] private Sprite[] rankingSprites;
 
     [SerializeField] private SpriteRenderer sr, srHightlight;
@@ -26,6 +26,11 @@ public class ValidationBehavior : MonoBehaviour
     public void SetVisuals(bool isSuccess, Color playerColor) {
         srHightlight.color = playerColor;
         sr.sprite = isSuccess ? correctSprite : wrongSprite;
+    }
+
+    public void SetVisualsStolen(Color playerColor) {
+        srHightlight.color = playerColor;
+        sr.sprite = stolenSprite;
     }
 
     public void UseRank(int ranking, Color playerColor) {

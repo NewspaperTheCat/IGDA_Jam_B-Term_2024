@@ -104,17 +104,21 @@ public class CrowdGameManager : MonoBehaviour
         return foundPedestrian;
     }
 
+    List<CrowdPlayerPawn> stolenPlayers = new List<CrowdPlayerPawn>();
     List<CrowdPlayerPawn> correctPlayers = new List<CrowdPlayerPawn>();
     List<CrowdPlayerPawn> wrongPlayers = new List<CrowdPlayerPawn>();
     List<CrowdPlayerPawn> inactivePlayers = new List<CrowdPlayerPawn>();
     private void ScoreSelections() {
+        stolenPlayers = new List<CrowdPlayerPawn>();
         correctPlayers = new List<CrowdPlayerPawn>();
         wrongPlayers = new List<CrowdPlayerPawn>();
         inactivePlayers = new List<CrowdPlayerPawn>();
 
         foreach (CrowdPlayerPawn player in players) {
             if (player.HighlightedAny()) {
-                if (player.HighlightedCorrectPedestrian()) {
+                if (player.HighlightedStolen()) {
+                    stolenPlayers.Add(player);
+                } else if (player.HighlightedCorrectPedestrian()) {
                     correctPlayers.Add(player);
                 } else {
                     wrongPlayers.Add(player);
@@ -124,23 +128,38 @@ public class CrowdGameManager : MonoBehaviour
             }
         }
 
+        if (stolenPlayers.Count > 1) stolenPlayers.Sort();
         if (correctPlayers.Count > 1) correctPlayers.Sort();
         if (wrongPlayers.Count > 1) wrongPlayers.Sort();
         if (inactivePlayers.Count > 1) Shuffle(inactivePlayers);
 
         List<CrowdPlayerPawn> orderedPlayers = new List<CrowdPlayerPawn>();
+        orderedPlayers.AddRange(stolenPlayers);
         orderedPlayers.AddRange(correctPlayers);
         orderedPlayers.AddRange(wrongPlayers);
         orderedPlayers.AddRange(inactivePlayers);
 
         for (int i = 0; i < playerScores.Length; i++) {
-            playerScores[orderedPlayers[i].playerPawnIndex] += playerScores.Length - i;
+            int bonus = i < stolenPlayers.Count ? 2 : 0;
+            playerScores[orderedPlayers[i].playerPawnIndex] += playerScores.Length - i + bonus;
         }
 
         StartCoroutine("DisplayAccuracy");
     }
 
     IEnumerator DisplayAccuracy() {
+        foreach (CrowdPlayerPawn player in stolenPlayers) {
+            ValidationBehavior vb = Instantiate(
+                validationPrefab,
+                player.GetHighlightedPosition(),
+                Quaternion.identity
+            ).GetComponent<ValidationBehavior>();
+            vb.SetVisualsStolen(player.GetColor());
+            AudioManager.inst.PlayCorrect();
+
+            yield return new WaitForSeconds(scoreDuration / players.Count);
+        }
+
         foreach (CrowdPlayerPawn player in correctPlayers) {
             ValidationBehavior vb = Instantiate(
                 validationPrefab,

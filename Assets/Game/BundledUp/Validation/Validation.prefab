@@ -75,12 +75,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: -602280380, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  m_Sprite: {fileID: -210395953, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -180,12 +180,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -946776646, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  m_Sprite: {fileID: -1759434576, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -236,14 +236,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7dbc3818bd0e3c41b289c004804f014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  correctSprite: {fileID: -641200676, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
-  wrongSprite: {fileID: 1603537533, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  correctSprite: {fileID: -210395953, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  wrongSprite: {fileID: -1780909082, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  stolenSprite: {fileID: 896809450, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
   rankingSprites:
-  - {fileID: -1091509649, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
-  - {fileID: 1772708449, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
-  - {fileID: -602280380, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
-  - {fileID: -1920923199, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  - {fileID: 310837907, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  - {fileID: 262873196, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  - {fileID: 759257315, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
+  - {fileID: -1922013085, guid: 9f6b18c9d1fc893458bc9ef2522aaa7e, type: 3}
   sr: {fileID: 1262545522038262971}
   srHightlight: {fileID: 7879429009737717709}
   an: {fileID: 2914714282456285363}
-  tintDegree: 0.6
