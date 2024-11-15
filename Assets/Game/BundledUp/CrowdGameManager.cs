@@ -85,7 +85,7 @@ public class CrowdGameManager : MonoBehaviour
                 }
                 if (selectCount == players.Count)
                 {
-                    phaseTimer = 0;
+                    phaseTimer = Mathf.Clamp(phaseTimer, 0, 1.25f);
                 }
             }
         } else {
