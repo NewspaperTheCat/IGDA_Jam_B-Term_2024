@@ -33,6 +33,9 @@ public class PedestrianBehavior : MonoBehaviour
     }
 
     public void ChooseMovementType() {
+        velocity = Vector2.zero;
+        accelerationMagnitude = 0;
+
         int chosenType = Random.Range(0, 100);
         if (chosenType >= 70) {
             chosenType = (int)pedestrianMovment.Wander;

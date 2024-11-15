@@ -7922,7 +7922,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   currentGamePhase: 0
-  searchDuration: 10
+  searchDuration: 15
   selectDuration: 10
   scoreDuration: 3
   rankDuration: 5
