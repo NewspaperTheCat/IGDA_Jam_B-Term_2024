@@ -21,6 +21,9 @@ public class PedestrianBehavior : MonoBehaviour
     private float accelerationMagnitude = 0;
     private Vector2 pivot = Vector2.zero;
 
+    private bool hasEntered = false;
+    float entrySpeed;
+
     public int controlledByIndex = -1;
     [SerializeField] private Transform spriteHolder;
     [SerializeField] private SpriteRenderer[] colorableSprites;
@@ -28,8 +31,8 @@ public class PedestrianBehavior : MonoBehaviour
     private bool highlighted = false;
 
     void Start() {
-        ChooseMovementType();
         ChooseAttire();
+        float entrySpeed = CrowdGameManager.inst.boundaries.x * 1.5f * -Mathf.Sign(transform.position.x) / CrowdGameManager.inst.introDuration;
     }
 
     public void ChooseMovementType() {
@@ -79,7 +82,11 @@ public class PedestrianBehavior : MonoBehaviour
     }
 
     void Update() {
-        if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Search) {
+        if (!hasEntered && CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Intro) {
+            transform.Translate(Vector3.right * -6.375f * Mathf.Sign(transform.position.x) * Time.deltaTime);
+        } else if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Search) {
+            hasEntered = true;
+
             switch (movementType) {
                 case pedestrianMovment.Wiggle:
                     Wiggle();

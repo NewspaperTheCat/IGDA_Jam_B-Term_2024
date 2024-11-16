@@ -7843,8 +7843,9 @@ MonoBehaviour:
   boundaries: {x: 17, y: 5.5}
   center: {x: 0, y: -3}
   pedestrianPrefab: {fileID: 1920749213441905201, guid: 0dbdc7401bbbe9140860539b39f92b0a, type: 3}
-  numPedestrians: 90
-  numRounds: 1
+  numStarting: 65
+  numPerRound: 15
+  numRounds: 3
   players:
   - {fileID: 1675663930}
   - {fileID: 1533345083}
@@ -7922,6 +7923,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   currentGamePhase: 0
+  introDuration: 4
   searchDuration: 15
   selectDuration: 10
   scoreDuration: 3

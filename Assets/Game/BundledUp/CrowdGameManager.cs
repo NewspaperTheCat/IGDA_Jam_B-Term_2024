@@ -12,7 +12,7 @@ public class CrowdGameManager : MonoBehaviour
     public Vector2 boundaries = new Vector2(17f, 8.25f);
     public Vector2 center = new Vector2(0, -7.5f/2f);
     [SerializeField] private GameObject pedestrianPrefab;
-    [SerializeField] private int numPedestrians = 25;
+    [SerializeField] private int numStarting = 65, numPerRound = 10;
     [SerializeField] private int numRounds = 3;
     [SerializeField] private List<CrowdPlayerPawn> players = new List<CrowdPlayerPawn>();
     private int[] playerScores;
@@ -26,14 +26,16 @@ public class CrowdGameManager : MonoBehaviour
     public UnityEvent sceneChanged;
 
     public enum gamePhase {
+        Intro,
         Search,
         Select,
         Score,
         Rank
     }
 
-    public gamePhase currentGamePhase = gamePhase.Search;
+    public gamePhase currentGamePhase = gamePhase.Intro;
     private float phaseTimer;
+    public float introDuration = 4;
     [SerializeField] private float searchDuration = 15, selectDuration = 10, scoreDuration = 5, rankDuration = 5;
     private List<PedestrianBehavior> pedestrians = new List<PedestrianBehavior>();
 
@@ -42,14 +44,7 @@ public class CrowdGameManager : MonoBehaviour
     }
 
     void Start() {
-        for (int i = 0; i < numPedestrians; i++) {
-            Vector2 ranPos = new Vector2(
-                Random.Range(-boundaries.x, boundaries.x),
-                Random.Range(-boundaries.y, boundaries.y)
-            ) + center;
-            GameObject pedestrian = Instantiate(pedestrianPrefab, ranPos, Quaternion.identity);
-            pedestrians.Add(pedestrian.GetComponent<PedestrianBehavior>());
-        }
+        SpawnPedestrians(numStarting);
 
         // Remove disconnected players
         if (PlayerManager.players.Count != 0)
@@ -60,10 +55,21 @@ public class CrowdGameManager : MonoBehaviour
             }
 
         playerScores = new int[players.Count];
+ 
+        currentGamePhase = gamePhase.Intro;
+        phaseTimer = introDuration;
+    }
 
-        // peculiar settings so that it gets switched to Search after Start calls are done  
-        currentGamePhase = gamePhase.Score;
-        phaseTimer = 0;
+    private void SpawnPedestrians(int num) {
+        for (int i = 0; i < num; i++) {
+            Vector2 ranPos = new Vector2(
+                Random.Range(-boundaries.x, boundaries.x),
+                Random.Range(-boundaries.y, boundaries.y)
+            ) + center;
+            ranPos += Vector2.right * Mathf.Sign(ranPos.x) * boundaries.x * 1.5f;
+            GameObject pedestrian = Instantiate(pedestrianPrefab, ranPos, Quaternion.identity);
+            pedestrians.Add(pedestrian.GetComponent<PedestrianBehavior>());
+        }
     }
 
     private void Update() {
@@ -90,7 +96,14 @@ public class CrowdGameManager : MonoBehaviour
             }
         } else {
             phaseTimerText.text = "0";
-            if (currentGamePhase == gamePhase.Search) {
+            if (currentGamePhase == gamePhase.Intro) {
+                currentGamePhase = gamePhase.Search;
+                phaseTimer = searchDuration;
+
+                foreach (PedestrianBehavior pedestrian in pedestrians) {
+                    pedestrian.ChooseMovementType();
+                }
+            } else if (currentGamePhase == gamePhase.Search) {
                 currentGamePhase = gamePhase.Select;
                 phaseTimer = selectDuration;
             } else if (currentGamePhase == gamePhase.Select) {
@@ -105,13 +118,10 @@ public class CrowdGameManager : MonoBehaviour
                     phaseTimer = rankDuration;
                     SubmitScores();
                 } else {
-                    currentGamePhase = gamePhase.Search;
-                    phaseTimer = searchDuration;
+                    currentGamePhase = gamePhase.Intro;
+                    phaseTimer = introDuration;
                     roundDisplay.text = "Round " + round;
-
-                    foreach (PedestrianBehavior pedestrian in pedestrians) {
-                        pedestrian.ChooseMovementType();
-                    }
+                    SpawnPedestrians(numPerRound);
                 }
             }
             sceneChanged.Invoke();
