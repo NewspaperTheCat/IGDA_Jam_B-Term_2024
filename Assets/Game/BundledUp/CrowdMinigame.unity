@@ -5749,8 +5749,8 @@ MonoBehaviour:
   - {fileID: 1214852035}
   - {fileID: 1211745613}
   SFXPrefab: {fileID: 7912255823345077518, guid: ce1a7b3e0d4e7eb43b8014b05ce45921, type: 3}
-  highlightSound: {fileID: 8300000, guid: 5561771e00693dc4f8b2cead609a1ce3, type: 3}
-  hoverSound: {fileID: 8300000, guid: 7333ccc386a15734dae4754d0738fa98, type: 3}
+  highlightSound: {fileID: 8300000, guid: 6e8f205107aed7140bf37d83e2341904, type: 3}
+  hoverSound: {fileID: 8300000, guid: b0c42ec710fd8134981725bc05cbb419, type: 3}
   correctSound: {fileID: 8300000, guid: 73aea191815bd7246927204227bd2e83, type: 3}
   incorrectSound: {fileID: 8300000, guid: c39907e60634d9d4292d9a2c9034b6be, type: 3}
 --- !u!4 &600231229

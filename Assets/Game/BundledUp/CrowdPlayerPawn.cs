@@ -21,6 +21,10 @@ public class CrowdPlayerPawn : Pawn, IComparable<CrowdPlayerPawn>
     [SerializeField] private GameObject pointer;
     private float selectionStartTime, highlightTime;
     
+    private void Start() {
+        pointer.SetActive(false);
+    }
+
     private void Update() {
         if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Search) {
             controlledPedestrian.SetVelocity(_moveInput * pedestrianSpeed);
@@ -64,8 +68,9 @@ public class CrowdPlayerPawn : Pawn, IComparable<CrowdPlayerPawn>
     }
 
     public void SceneChanged() {
-        if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Search) {
-            pointer.SetActive(false);
+        if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Intro) {
+                pointer.SetActive(false);
+        } else if (CrowdGameManager.inst.currentGamePhase == CrowdGameManager.gamePhase.Search) {
             if (highlightedPedestrian != null) { 
                 highlightedPedestrian.Highlight(Color.white);
                 highlightedPedestrian = null;
